@@ -1,3 +1,0 @@
---ui tdd
-test/setup.js
-test/**/*.test.js

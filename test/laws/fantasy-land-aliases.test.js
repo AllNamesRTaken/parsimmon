@@ -1,8 +1,8 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-describe("fantasy-land/* method aliases", function() {
+describe("fantasy-land/* method aliases", function () {
   function makeTester(name) {
-    return function() {
+    return function () {
       var flName = "fantasy-land/" + name;
       var parser = Parsimmon.of("burrito");
       assert.equal(parser[name], parser[flName]);
@@ -12,12 +12,10 @@ describe("fantasy-land/* method aliases", function() {
   for (var i = 0; i < methods.length; i++) {
     it("fantasy-land/" + methods[i] + " alias", makeTester(methods[i]));
   }
-
-  it("Fantasy Land Parsimmon.empty alias", function() {
+  it("Fantasy Land Parsimmon.empty alias", function () {
     assert.equal(Parsimmon.empty, Parsimmon["fantasy-land/empty"]);
   });
-
-  it("Fantasy Land Parsimmon.of alias", function() {
+  it("Fantasy Land Parsimmon.of alias", function () {
     assert.equal(Parsimmon.of, Parsimmon["fantasy-land/of"]);
     assert.equal(Parsimmon.of, Parsimmon.any.of);
   });

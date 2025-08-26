@@ -1,9 +1,9 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-describe("Fantasy Land Chain", function() {
-  it("associativity", function() {
+describe("Fantasy Land Chain", function () {
+  it("associativity", function () {
     function appender(x) {
-      return function(xs) {
+      return function (xs) {
         return Parsimmon.of(xs.concat(x));
       };
     }
@@ -12,12 +12,9 @@ describe("Fantasy Land Chain", function() {
     }
     var list = Parsimmon.sepBy(Parsimmon.letters, Parsimmon.whitespace);
     var input = "quuz foo bar baz";
-    var output = {
-      status: true,
-      value: ["baz", "bar", "foo", "quuz", "aaa"]
-    };
+    var output = { status: true, value: ["baz", "bar", "foo", "quuz", "aaa"] };
     var p1 = list.chain(reverse).chain(appender("aaa"));
-    var p2 = list.chain(function(x) {
+    var p2 = list.chain(function (x) {
       return reverse(x).chain(appender("aaa"));
     });
     var out1 = p1.parse(input);

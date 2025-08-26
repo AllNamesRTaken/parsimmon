@@ -1,7 +1,7 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-describe("assert", function() {
-  it("fails if given condition is false", function() {
+describe("assert", function () {
+  it("fails if given condition is false", function () {
     function condition1() {
       return false;
     }
@@ -14,18 +14,18 @@ describe("assert", function() {
     assert.deepEqual(p1.parse("a"), {
       status: false,
       expected: ["parsing error"],
-      index: { offset: 1, line: 1, column: 2 }
+      index: { offset: 1, line: 1, column: 2 },
     });
     assert.deepEqual(p1.parse("b"), {
       status: false,
       expected: ["'a'"],
-      index: { offset: 0, line: 1, column: 1 }
+      index: { offset: 0, line: 1, column: 1 },
     });
     assert.deepEqual(p2.parse("a"), { status: true, value: "a" });
     assert.deepEqual(p2.parse("b"), {
       status: false,
       expected: ["'a'"],
-      index: { offset: 0, line: 1, column: 1 }
+      index: { offset: 0, line: 1, column: 1 },
     });
   });
 });

@@ -1,7 +1,7 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-describe("Parsimmon.makeFailure", function() {
-  it("creates a failure result", function() {
+describe("Parsimmon.makeFailure", function () {
+  it("creates a failure result", function () {
     var furthest = 4444;
     var expected = "waiting in the clock tower";
     var result = Parsimmon.makeFailure(furthest, expected);
@@ -10,10 +10,10 @@ describe("Parsimmon.makeFailure", function() {
       index: -1,
       value: null,
       furthest: furthest,
-      expected: [expected]
+      expected: [expected],
     });
   });
-  it("creates a result with multiple expected values", function() {
+  it("creates a result with multiple expected values", function () {
     var furthest = 4444;
     var expected = ["once", "twice", "three times a lady"];
     var result = Parsimmon.makeFailure(furthest, expected);
@@ -22,7 +22,7 @@ describe("Parsimmon.makeFailure", function() {
       index: -1,
       value: null,
       furthest: furthest,
-      expected: expected
+      expected: expected,
     });
   });
 });

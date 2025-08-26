@@ -1,9 +1,7 @@
-"use strict";
-
 // Run me with Node to see my output!
 
-let util = require("util");
-let P = require("..");
+import util from "util";
+import P from "../build/parsimmon.es.min.js";
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -15,18 +13,15 @@ let Lang = P.createLanguage({
   Whitespace: () => P.regexp(/[ \n]*/),
   NotNewline: () => P.regexp(/[^\n]*/),
   Comma: () => P.string(","),
-  Comment: r => r.NotNewline.wrap(P.string("//"), P.string("\n")),
-  End: r => P.alt(P.string(";"), r._, P.string("\n"), P.eof),
-  _: r => r.Comment.sepBy(r.Whitespace).trim(r.Whitespace),
+  Comment: (r) => r.NotNewline.wrap(P.string("//"), P.string("\n")),
+  End: (r) => P.alt(P.string(";"), r._, P.string("\n"), P.eof),
+  _: (r) => r.Comment.sepBy(r.Whitespace).trim(r.Whitespace),
 
-  Program: r =>
-    r.Statement.many()
-      .trim(r._)
-      .node("Program"),
+  Program: (r) => r.Statement.many().trim(r._).node("Program"),
 
-  Statement: r => P.alt(r.Declaration, r.Assignment, r.Call),
+  Statement: (r) => P.alt(r.Declaration, r.Assignment, r.Call),
 
-  Declaration: r =>
+  Declaration: (r) =>
     P.seqObj(
       P.string("var"),
       r.s1,
@@ -35,35 +30,35 @@ let Lang = P.createLanguage({
       P.string("="),
       r.s0,
       ["initialValue", r.Expression],
-      r.End
+      r.End,
     ).node("Declaration"),
 
-  Assignment: r =>
+  Assignment: (r) =>
     P.seqObj(
       ["identifier", r.Identifier],
       r.s0,
       P.string("="),
       r.s0,
       ["newValue", r.Expression],
-      r.End
+      r.End,
     ).node("Assignment"),
 
-  Call: r =>
+  Call: (r) =>
     P.seqObj(
       ["function", r.Expression],
       P.string("("),
       ["arguments", r.Expression.trim(r._).sepBy(r.Comma)],
-      P.string(")")
+      P.string(")"),
     ).node("Call"),
 
-  Expression: r => P.alt(r.Number, r.Reference),
+  Expression: (r) => P.alt(r.Number, r.Reference),
 
   Number: () =>
     P.regexp(/[0-9]+/)
       .map(Number)
       .node("Number"),
   Identifier: () => P.regexp(/[a-z]+/).node("Identifier"),
-  Reference: r => r.Identifier.node("Reference")
+  Reference: (r) => r.Identifier.node("Reference"),
 });
 
 // -*- Linter -*-
@@ -105,7 +100,7 @@ let lintHelpers = {
     node.value.arguments.forEach(lint_);
   },
 
-  Number: noLint
+  Number: noLint,
 };
 
 function lint_(node) {

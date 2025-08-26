@@ -1,11 +1,11 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-describe("formatError", function() {
-  it("end of input", function() {
+describe("formatError", function () {
+  it("end of input", function () {
     var parser = Parsimmon.alt(
       Parsimmon.fail("a"),
       Parsimmon.fail("b"),
-      Parsimmon.fail("c")
+      Parsimmon.fail("c"),
     );
     var expectation =
       "\n" +
@@ -20,15 +20,14 @@ describe("formatError", function() {
     var answer = Parsimmon.formatError(input, parser.parse(input));
     assert.deepEqual(answer, expectation);
   });
-
-  it("middle of input", function() {
+  it("middle of input", function () {
     var parser = Parsimmon.seq(
       Parsimmon.string("1"),
       Parsimmon.alt(
         Parsimmon.fail("a"),
         Parsimmon.fail("b"),
-        Parsimmon.fail("c")
-      )
+        Parsimmon.fail("c"),
+      ),
     );
     var expectation =
       "\n" +
@@ -43,12 +42,9 @@ describe("formatError", function() {
     var answer = Parsimmon.formatError(input, parser.parse(input));
     assert.deepEqual(answer, expectation);
   });
-
-  it("milti-line input", function() {
+  it("milti-line input", function () {
     var parser = Parsimmon.seq(
-      Parsimmon.string("\n")
-        .many()
-        .then(Parsimmon.string("a"))
+      Parsimmon.string("\n").many().then(Parsimmon.string("a")),
     );
     var expectation =
       "\n" +
@@ -68,12 +64,9 @@ describe("formatError", function() {
     var answer = Parsimmon.formatError(input, parser.parse(input));
     assert.deepEqual(answer, expectation);
   });
-
-  it("multi-line line-number padding", function() {
+  it("multi-line line-number padding", function () {
     var parser = Parsimmon.seq(
-      Parsimmon.string("\n")
-        .many()
-        .then(Parsimmon.string("a"))
+      Parsimmon.string("\n").many().then(Parsimmon.string("a")),
     );
     var expectation =
       "\n" +
@@ -87,18 +80,13 @@ describe("formatError", function() {
       "Expected one of the following: \n" +
       "\n" +
       "'\n', 'a'\n";
-
     var input = new Array(9).join("\n") + "\nb";
     var answer = Parsimmon.formatError(input, parser.parse(input));
-
     assert.deepEqual(answer, expectation);
   });
-
-  it("multi-line line-number with 3-digits", function() {
+  it("multi-line line-number with 3-digits", function () {
     var parser = Parsimmon.seq(
-      Parsimmon.string("\n")
-        .many()
-        .then(Parsimmon.string("b"))
+      Parsimmon.string("\n").many().then(Parsimmon.string("b")),
     );
     var expectation =
       "\n" +
@@ -113,19 +101,13 @@ describe("formatError", function() {
       "Expected one of the following: \n" +
       "\n" +
       "'\n', 'b'\n";
-
     var input = new Array(117).join("\n") + "\nc" + new Array(10).join("\n");
-    var answer = Parsimmon.formatError(input, parser.parse(input));
-    // console.log(answer);
-
+    var answer = Parsimmon.formatError(input, parser.parse(input)); // console.log(answer);
     assert.deepEqual(answer, expectation);
   });
-
-  it("multi-line line-number with 3-digit to 4-digit line numbers", function() {
+  it("multi-line line-number with 3-digit to 4-digit line numbers", function () {
     var parser = Parsimmon.seq(
-      Parsimmon.string("\n")
-        .many()
-        .then(Parsimmon.string("c"))
+      Parsimmon.string("\n").many().then(Parsimmon.string("c")),
     );
     var expectation =
       "\n" +
@@ -140,10 +122,8 @@ describe("formatError", function() {
       "Expected one of the following: \n" +
       "\n" +
       "'\n', 'c'\n";
-
     var input = new Array(999).join("\n") + "\nd" + new Array(10).join("\n");
     var answer = Parsimmon.formatError(input, parser.parse(input));
-
     assert.deepEqual(answer, expectation);
   });
 });

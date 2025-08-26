@@ -1,9 +1,7 @@
-"use strict";
-
 // Run me with Node to see my output!
 
-let util = require("util");
-let P = require("..");
+import util from "util";
+import P from "../build/parsimmon.es.min.js";
 let B = P.Binary;
 
 ///////////////////////////////////////////////////////////////////////
@@ -16,13 +14,13 @@ let STRING_ENCODING = "utf8";
 let DIRECTIONS_ENUM = ["up", "down", "left", "right"];
 
 let Lang = P.createLanguage({
-  File: p =>
+  File: (p) =>
     P.seqObj(
       p.MagicNumber,
       ["directions", p.Directions5],
       ["array", p.Int32Array],
       ["double", B.doubleLE],
-      ["string", p.String]
+      ["string", p.String],
     ),
   Directions5: () =>
     B.bitSeq([
@@ -31,15 +29,15 @@ let Lang = P.createLanguage({
       2, // 2-bit direction #2
       2, // 2-bit direction #3
       2, // 2-bit direction #4
-      2 // 2-bit direction #5
-    ]).map(xs => {
-      return xs.slice(1).map(x => DIRECTIONS_ENUM[x]);
+      2, // 2-bit direction #5
+    ]).map((xs) => {
+      return xs.slice(1).map((x) => DIRECTIONS_ENUM[x]);
     }),
   MagicNumber: () => P.seq(B.byte(0x13), B.byte(0x37)),
   Int32: () => B.int32BE,
   UInt32: () => B.uint32BE,
-  String: p => p.UInt32.chain(n => B.encodedString(STRING_ENCODING, n)),
-  Int32Array: p => p.UInt32.chain(n => p.Int32.times(n))
+  String: (p) => p.UInt32.chain((n) => B.encodedString(STRING_ENCODING, n)),
+  Int32Array: (p) => p.UInt32.chain((n) => p.Int32.times(n)),
 });
 
 ///////////////////////////////////////////////////////////////////////
@@ -82,7 +80,7 @@ let bytes = [
   ...n512,
   ...n513,
   ...d314,
-  ...str
+  ...str,
 ];
 let input = Buffer.from(bytes);
 

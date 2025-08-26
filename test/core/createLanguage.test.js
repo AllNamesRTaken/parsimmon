@@ -1,71 +1,67 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
+import { testSetScenario } from "../helper.js";
 
-testSetScenario(function() {
-  describe("Parsimmon.createLanguage", function() {
-    before(function() {
+testSetScenario(function () {
+  describe("Parsimmon.createLanguage", function () {
+    beforeAll(function () {
       Object.prototype.NASTY = "dont extend Object.prototype please";
     });
-
-    after(function() {
+    afterAll(function () {
       delete Object.prototype.NASTY;
     });
-
-    it("should return an object of parsers", function() {
+    it("should return an object of parsers", function () {
       var lang = Parsimmon.createLanguage({
-        a: function() {
+        a: function () {
           return Parsimmon.string("a");
         },
-        b: function() {
+        b: function () {
           return Parsimmon.string("b");
-        }
+        },
       });
       assert.ok(Parsimmon.isParser(lang.a));
       assert.ok(Parsimmon.isParser(lang.b));
     });
-
-    it("should allow direct recursion in parsers", function() {
+    it("should allow direct recursion in parsers", function () {
       var lang = Parsimmon.createLanguage({
-        Parentheses: function(r) {
+        Parentheses: function (r) {
           return Parsimmon.alt(
             Parsimmon.string("()"),
             Parsimmon.string("(")
               .then(r.Parentheses)
-              .skip(Parsimmon.string(")"))
+              .skip(Parsimmon.string(")")),
           );
-        }
+        },
       });
       lang.Parentheses.tryParse("(((())))");
     });
-
-    it("should ignore non-own properties", function() {
+    it("should ignore non-own properties", function () {
       var obj = Object.create({
-        foo: function() {
+        foo: function () {
           return Parsimmon.of(1);
-        }
+        },
       });
       var lang = Parsimmon.createLanguage(obj);
       assert.strictEqual(lang.foo, undefined);
     });
-
-    it("should allow indirect recursion in parsers", function() {
+    it("should allow indirect recursion in parsers", function () {
       var lang = Parsimmon.createLanguage({
-        Value: function(r) {
+        Value: function (r) {
           return Parsimmon.alt(r.Number, r.Symbol, r.List);
         },
-        Number: function() {
+        Number: function () {
           return Parsimmon.regexp(/[0-9]+/).map(Number);
         },
-        Symbol: function() {
+        Symbol: function () {
           return Parsimmon.regexp(/[a-z]+/);
         },
-        List: function(r) {
+        List: function (r) {
           return Parsimmon.string("(")
             .then(Parsimmon.sepBy(r.Value, r._))
             .skip(Parsimmon.string(")"));
         },
-        _: function() {
+        _: function () {
           return Parsimmon.optWhitespace;
-        }
+        },
       });
       lang.Value.tryParse("(list 1 2 foo (list nice 3 56 989 asdasdas))");
     });

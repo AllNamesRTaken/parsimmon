@@ -1,10 +1,10 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-describe(".parse", function() {
-  context("The input is a buffer.", function() {
-    it("Formats errors correctly.", function() {
+describe(".parse", function () {
+  describe("The input is a buffer.", function () {
+    it("Formats errors correctly.", function () {
       var parser = Parsimmon.Binary.byte(0);
-      assert.throws(function() {
+      assert.throws(function () {
         parser.tryParse(Buffer.from([0xf]));
       }, /0x00/);
     });

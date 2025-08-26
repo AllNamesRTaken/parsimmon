@@ -1,7 +1,7 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-describe("parser.thru", function() {
-  it("should return wrapper(this)", function() {
+describe("parser.thru", function () {
+  it("should return wrapper(this)", function () {
     function arrayify(x) {
       return [x];
     }

@@ -1,6 +1,6 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-it("Parsimmon.isParser", function() {
+it("Parsimmon.isParser", function () {
   assert.strictEqual(Parsimmon.isParser(undefined), false);
   assert.strictEqual(Parsimmon.isParser({}), false);
   assert.strictEqual(Parsimmon.isParser(null), false);

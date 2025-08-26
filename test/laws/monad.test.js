@@ -1,15 +1,12 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-describe("Fantasy Land Monad", function() {
-  it("left identity", function() {
+describe("Fantasy Land Monad", function () {
+  it("left identity", function () {
     function upperCase(x) {
       return Parsimmon.of(x.toUpperCase());
     }
     var input = "foo";
-    var output = {
-      status: true,
-      value: "FOO"
-    };
+    var output = { status: true, value: "FOO" };
     var p1 = Parsimmon.of(input).chain(upperCase);
     var p2 = upperCase(input);
     var out1 = p1.parse("");
@@ -17,13 +14,9 @@ describe("Fantasy Land Monad", function() {
     assert.deepEqual(out1, out2);
     assert.deepEqual(out1, output);
   });
-
-  it("right identity", function() {
+  it("right identity", function () {
     var input = "monad burrito";
-    var output = {
-      status: true,
-      value: input
-    };
+    var output = { status: true, value: input };
     var p1 = Parsimmon.all.chain(Parsimmon.of);
     var p2 = Parsimmon.all;
     var out1 = p1.parse(input);

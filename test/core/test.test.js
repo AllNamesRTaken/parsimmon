@@ -1,12 +1,12 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-it("test", function() {
-  var parser = Parsimmon.test(function(ch) {
+it("test", function () {
+  var parser = Parsimmon.test(function (ch) {
     return ch !== ".";
   });
   assert.equal(parser.parse("x").value, "x");
   assert.equal(parser.parse(".").status, false);
-  assert.throws(function() {
+  assert.throws(function () {
     Parsimmon.test("not a function");
   });
 });

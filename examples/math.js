@@ -1,9 +1,7 @@
-"use strict";
-
 // Run me with Node to see my output!
 
-let util = require("util");
-let P = require("..");
+import util from "util";
+import P from "../build/parsimmon.es.min.js";
 
 // This parser supports basic math with + - * / ^, unary negation, factorial,
 // and parentheses. It does not evaluate the math, just turn it into a series of
@@ -28,11 +26,7 @@ let _ = P.optWhitespace;
 // whitespace, and gives back the word "Add" or "Sub" instead of the character.
 function operators(ops) {
   let keys = Object.keys(ops).sort();
-  let ps = keys.map(k =>
-    P.string(ops[k])
-      .trim(_)
-      .result(k)
-  );
+  let ps = keys.map((k) => P.string(ops[k]).trim(_).result(k));
   return P.alt.apply(null, ps);
 }
 
@@ -67,7 +61,7 @@ function POSTFIX(operatorsParser, nextParser) {
   // PARSE  :: [4, "factorial", "factorial", "factorial"]
   // REDUCE :: ["factorial", ["factorial", ["factorial", 4]]]
   return P.seqMap(nextParser, operatorsParser.many(), (x, suffixes) =>
-    suffixes.reduce((acc, x) => [x, acc], x)
+    suffixes.reduce((acc, x) => [x, acc], x),
   );
 }
 
@@ -77,9 +71,9 @@ function POSTFIX(operatorsParser, nextParser) {
 // right. (e.g. 1^2^3 is 1^(2^3) not (1^2)^3)
 function BINARY_RIGHT(operatorsParser, nextParser) {
   let parser = P.lazy(() =>
-    nextParser.chain(next =>
-      P.seq(operatorsParser, P.of(next), parser).or(P.of(next))
-    )
+    nextParser.chain((next) =>
+      P.seq(operatorsParser, P.of(next), parser).or(P.of(next)),
+    ),
   );
   return parser;
 }
@@ -107,7 +101,7 @@ function BINARY_LEFT(operatorsParser, nextParser) {
         let [op, another] = ch;
         return [op, acc, another];
       }, first);
-    }
+    },
   );
 }
 
@@ -115,15 +109,12 @@ function BINARY_LEFT(operatorsParser, nextParser) {
 // in an array with a string tag so that our data is easy to manipulate at the
 // end and we don't have to use `typeof` to check it.
 let Num = P.regexp(/[0-9]+/)
-  .map(str => ["Number", +str])
+  .map((str) => ["Number", +str])
   .desc("number");
 
 // A basic value is any parenthesized expression or a number.
 let Basic = P.lazy(() =>
-  P.string("(")
-    .then(MyMath)
-    .skip(P.string(")"))
-    .or(Num)
+  P.string("(").then(MyMath).skip(P.string(")")).or(Num),
 );
 
 // Now we can describe the operators in order by precedence. You just need to
@@ -133,14 +124,14 @@ let table = [
   { type: POSTFIX, ops: operators({ Factorial: "!" }) },
   { type: BINARY_RIGHT, ops: operators({ Exponentiate: "^" }) },
   { type: BINARY_LEFT, ops: operators({ Multiply: "*", Divide: "/" }) },
-  { type: BINARY_LEFT, ops: operators({ Add: "+", Subtract: "-" }) }
+  { type: BINARY_LEFT, ops: operators({ Add: "+", Subtract: "-" }) },
 ];
 
 // Start off with Num as the base parser for numbers and thread that through the
 // entire table of operator parsers.
 let tableParser = table.reduce(
   (acc, level) => level.type(level.ops, acc),
-  Basic
+  Basic,
 );
 
 // The above is equivalent to:

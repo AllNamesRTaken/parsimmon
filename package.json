@@ -8,48 +8,44 @@
     "parsers",
     "parser combinators"
   ],
-  "author": "Jeanine Adkisson <jneen at jneen dot net>",
+  "author": "Joel Brage",
   "contributors": [
+    "Jeanine Adkisson <jneen at jneen dot net>",
     "Brian Mock <brian@mockbrian.com>"
   ],
-  "repository": "https://github.com/jneen/parsimmon",
+  "repository": "https://github.com/allnamesrtaken/parsimmon",
   "files": [
     "src",
     "build"
   ],
+  "type": "module",
   "main": "src/parsimmon.js",
   "browser": "build/parsimmon.umd.min.js",
   "devDependencies": {
-    "chai": "^4.2.0",
-    "coveralls": "^2.13.1",
-    "eslint": "^4.18.2",
-    "karma": "^4.1.0",
-    "karma-chai": "^0.1.0",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-mocha": "^1.3.0",
-    "mkdirp": "^0.5.1",
-    "mocha": "^3.4.2",
-    "nyc": "^11.0.3",
-    "prettier": "1.13.4",
-    "rimraf": "^2.5.4",
-    "webpack": "^4.6.0",
-    "webpack-cli": "^2.0.15"
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.34.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-chai-expect": "^3.1.0",
+    "eslint-plugin-mocha": "^11.1.0",
+    "mkdirp": "^3.0.1",
+    "prettier": "3.6.2",
+    "rimraf": "^6.0.1",
+    "vite": "^7.1.3",
+    "vitest": "^3.2.4"
   },
   "license": "MIT",
   "scripts": {
-    "preversion": "npm test",
-    "postversion": "git push --follow-tags && npm publish",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "git push --follow-tags && npm publish",
     "prebuild": "rimraf build && mkdirp build",
-    "build": "webpack -p",
     "prepublishOnly": "npm run test && npm run build",
-    "lint": "prettier --list-different '{examples,src,test}/**/*.js' webpack.config.js && eslint examples src test webpack.config.js",
-    "lint:fix": "prettier --write '{examples,src,test}/**/*.js' webpack.config.js && eslint --fix examples src test webpack.config.js",
-    "precoverage": "npm run test",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "lint": "prettier --list-different '{examples,src,test}/**/*.js' && eslint examples src test",
+    "lint:fix": "prettier --write '{examples,src,test}/**/*.js' && eslint --fix examples src test",
+    "coverage": "rimraf coverage && vitest run --coverage",
     "pretest": "npm run lint",
-    "test": "nyc --reporter=lcov --reporter=text-summary npm run test:mocha",
-    "test:mocha": "mocha --reporter dot",
-    "test:watch": "mocha --reporter min --watch",
-    "test:chrome": "karma start"
+    "test:dev": "vitest",
+    "test": "vitest run"
   }
 }

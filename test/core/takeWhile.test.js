@@ -1,14 +1,14 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-it("takeWhile", function() {
-  var parser = Parsimmon.takeWhile(function(ch) {
+it("takeWhile", function () {
+  var parser = Parsimmon.takeWhile(function (ch) {
     return ch !== ".";
   }).skip(Parsimmon.all);
   assert.equal(parser.parse("abc").value, "abc");
   assert.equal(parser.parse("abc.").value, "abc");
   assert.equal(parser.parse(".").value, "");
   assert.equal(parser.parse("").value, "");
-  assert.throws(function() {
+  assert.throws(function () {
     Parsimmon.takeWhile("not a function");
   });
 });

@@ -1,9 +1,7 @@
-/* global equivalentParsers */
+import Parsimmon from "../../src/parsimmon.js";
 
-"use strict";
-
-describe("Fantasy Land Semigroup", function() {
-  it("associativity", function() {
+/* global equivalentParsers */ describe("Fantasy Land Semigroup", function () {
+  it("associativity", function () {
     var a = Parsimmon.string("a");
     var b = Parsimmon.string("b");
     var c = Parsimmon.string("c");

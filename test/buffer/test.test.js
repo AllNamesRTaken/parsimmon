@@ -1,7 +1,7 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-it("test", function() {
-  var highBit = Parsimmon.test(function(ch) {
+it("test", function () {
+  var highBit = Parsimmon.test(function (ch) {
     return ch | 128;
   });
   assert.equal(highBit.parse(Buffer.from([255])).status, true);

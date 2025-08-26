@@ -1,4 +1,4 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
 function fill(length, filler) {
   var res = [];
@@ -8,11 +8,11 @@ function fill(length, filler) {
   return res;
 }
 
-describe("formatError", function() {
-  it("byte buffer error at the end of the short input", function() {
+describe("formatError", function () {
+  it("byte buffer error at the end of the short input", function () {
     var parser = Parsimmon.seq(
       Parsimmon.Binary.byte(0x00).many(),
-      Parsimmon.Binary.byte(0x01)
+      Parsimmon.Binary.byte(0x01),
     );
 
     var expectation =
@@ -33,7 +33,7 @@ describe("formatError", function() {
     assert.deepEqual(answer, expectation);
   });
 
-  it("byte buffer error with a value one character long", function() {
+  it("byte buffer error with a value one character long", function () {
     var parser = Parsimmon.seq(Parsimmon.Binary.byte(0x1));
 
     var expectation =
@@ -54,10 +54,10 @@ describe("formatError", function() {
     assert.deepEqual(answer, expectation);
   });
 
-  it("byte buffer error with multi-line input", function() {
+  it("byte buffer error with multi-line input", function () {
     var parser = Parsimmon.seq(
       Parsimmon.Binary.byte(0x00).many(),
-      Parsimmon.Binary.byte(0x01)
+      Parsimmon.Binary.byte(0x01),
     );
 
     var expectation =
@@ -97,8 +97,8 @@ describe("formatError", function() {
         [0x0, 0x0, 0x00, 0x0, 0x0, 0x0, 0x0, 0x0],
         [0x0, 0x0, 0x00, 0x0, 0x0, 0x0, 0x0, 0x0],
         [0x0, 0x0, 0x00, 0x0, 0x0, 0x0, 0x0, 0x0],
-        [0x0, 0x0, 0x00, 0x0, 0x0, 0x0, 0x0, 0x0]
-      )
+        [0x0, 0x0, 0x00, 0x0, 0x0, 0x0, 0x0, 0x0],
+      ),
     );
 
     var answer = Parsimmon.formatError(input, parser.parse(input));
@@ -106,10 +106,10 @@ describe("formatError", function() {
     assert.deepEqual(answer, expectation);
   });
 
-  it("byte buffer error at the first line of the multi-line input", function() {
+  it("byte buffer error at the first line of the multi-line input", function () {
     var parser = Parsimmon.seq(
       Parsimmon.Binary.byte(0x00).many(),
-      Parsimmon.Binary.byte(0x01)
+      Parsimmon.Binary.byte(0x01),
     );
 
     var expectation =
@@ -126,7 +126,10 @@ describe("formatError", function() {
       "\n";
 
     var input = Buffer.from(
-      [].concat([0x0, 0x0, 0xff, 0x0, 0x0, 0x0, 0x0, 0x0], [0x0, 0x0, 0x0, 0x0])
+      [].concat(
+        [0x0, 0x0, 0xff, 0x0, 0x0, 0x0, 0x0, 0x0],
+        [0x0, 0x0, 0x0, 0x0],
+      ),
     );
 
     var answer = Parsimmon.formatError(input, parser.parse(input));
@@ -134,10 +137,10 @@ describe("formatError", function() {
     assert.deepEqual(answer, expectation);
   });
 
-  it("byte buffer error at the end of the multi-line input", function() {
+  it("byte buffer error at the end of the multi-line input", function () {
     var parser = Parsimmon.seq(
       Parsimmon.Binary.byte(0x00).many(),
-      Parsimmon.Binary.byte(0x01)
+      Parsimmon.Binary.byte(0x01),
     );
 
     var expectation =
@@ -169,8 +172,8 @@ describe("formatError", function() {
         [0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x00],
         [0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x00],
         [0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x00],
-        [0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff] // <- Error
-      )
+        [0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xff], // <- Error
+      ),
     );
 
     var answer = Parsimmon.formatError(input, parser.parse(input));
@@ -178,10 +181,10 @@ describe("formatError", function() {
     assert.deepEqual(answer, expectation);
   });
 
-  it("parsing error in a large byte buffer", function() {
+  it("parsing error in a large byte buffer", function () {
     var parser = Parsimmon.seq(
       Parsimmon.Binary.byte(0x00).many(),
-      Parsimmon.Binary.byte(0x01)
+      Parsimmon.Binary.byte(0x01),
     );
 
     var expectation =
@@ -215,8 +218,8 @@ describe("formatError", function() {
         [0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x00],
         [0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x00],
         [0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x00],
-        [0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x00]
-      )
+        [0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x00],
+      ),
     );
 
     var answer = Parsimmon.formatError(input, parser.parse(input));
@@ -224,13 +227,13 @@ describe("formatError", function() {
     assert.deepEqual(answer, expectation);
   });
 
-  it("error marker is padded with correctly in an error on a fourth byte", function() {
+  it("error marker is padded with correctly in an error on a fourth byte", function () {
     var parser = Parsimmon.seq(
       Parsimmon.Binary.byte(0x01),
       Parsimmon.Binary.byte(0x00),
       Parsimmon.Binary.byte(0x00),
       Parsimmon.Binary.byte(0x02),
-      Parsimmon.Binary.byte(0x01)
+      Parsimmon.Binary.byte(0x01),
     );
 
     var expectation =
@@ -252,13 +255,13 @@ describe("formatError", function() {
     assert.deepEqual(answer, expectation);
   });
 
-  it("error marker is padded with correctly in an error on a fifth byte", function() {
+  it("error marker is padded with correctly in an error on a fifth byte", function () {
     var parser = Parsimmon.seq(
       Parsimmon.Binary.byte(0x01),
       Parsimmon.Binary.byte(0x00),
       Parsimmon.Binary.byte(0x00),
       Parsimmon.Binary.byte(0x02),
-      Parsimmon.Binary.byte(0x01)
+      Parsimmon.Binary.byte(0x01),
     );
 
     var expectation =

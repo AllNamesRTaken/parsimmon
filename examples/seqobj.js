@@ -1,9 +1,7 @@
-"use strict";
-
 // Run me with Node to see my output!
 
-let util = require("util");
-let P = require("../");
+import util from "util";
+import P from "../build/parsimmon.es.min.js";
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -17,15 +15,15 @@ let Lang = P.createLanguage({
 
   Identifier: () => P.letters.node("Identifier"),
 
-  MethodCall: r =>
+  MethodCall: (r) =>
     P.seqObj(
       ["receiver", r.Identifier],
       r.Dot.trim(r._),
       ["method", r.Identifier],
       r.LParen,
       ["arguments", r.Identifier.trim(r._).sepBy(r.Comma)],
-      r.RParen
-    ).node("MethodCall")
+      r.RParen,
+    ).node("MethodCall"),
 });
 
 ///////////////////////////////////////////////////////////////////////

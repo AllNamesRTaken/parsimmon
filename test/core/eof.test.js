@@ -1,10 +1,9 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-it("eof", function() {
+it("eof", function () {
   var parser = Parsimmon.optWhitespace
     .skip(Parsimmon.eof)
     .or(Parsimmon.all.result("default"));
-
   assert.equal(parser.parse("  ").value, "  ");
   assert.equal(parser.parse("x").value, "default");
 });

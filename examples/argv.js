@@ -1,48 +1,44 @@
-"use strict";
-
 // Run me with Node to see my output!
 // $ node examples/argv.js "foo -x"
 // $ node examples/argv.js "-x=1 bar"
 // $ node examples/argv.js "--some --thing=x"
 
-let util = require("util");
-let P = require("..");
+import util from "util";
+import P from "../build/parsimmon.es.min.js";
 
 let CLI = P.createLanguage({
-  expression: function(r) {
+  expression: function (r) {
     // whitespace-separated words, strings and options
     return P.alt(r.word, r.string, r.option)
       .sepBy(P.whitespace)
       .trim(P.optWhitespace);
   },
 
-  option: function(r) {
+  option: function (r) {
     // one of possible quotes, then sequence of anything except that quote (unless escaped), then the same quote
     return P.seq(
       P.alt(P.string("-").then(P.regex(/[a-z]/)), P.string("--").then(r.word)),
-      P.alt(P.string("=").then(r.word), P.of(true))
+      P.alt(P.string("=").then(r.word), P.of(true)),
     );
   },
 
-  word: function() {
+  word: function () {
     // 1 char of anything except forbidden symbols and dash, then 0+ chars of anything except forbidden symbols
     return P.regex(/[^-=\s"'][^=\s"']*/);
   },
 
-  string: function() {
+  string: function () {
     // one of possible quotes, then sequence of anything except that quote (unless escaped), then the same quote
-    return P.oneOf(`"'`).chain(function(q) {
+    return P.oneOf(`"'`).chain(function (q) {
       return P.alt(
-        P.noneOf(`\\${q}`)
-          .atLeast(1)
-          .tie(), // everything but quote and escape sign
-        P.string(`\\`).then(P.any) // escape sequence like \"
+        P.noneOf(`\\${q}`).atLeast(1).tie(), // everything but quote and escape sign
+        P.string(`\\`).then(P.any), // escape sequence like \"
       )
         .many()
         .tie()
         .skip(P.string(q));
     });
-  }
+  },
 });
 
 let expression = process.argv[2] || "";

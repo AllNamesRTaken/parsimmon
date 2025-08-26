@@ -1,6 +1,6 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-describe("contramap", function() {
+describe("contramap", function () {
   function toLower(x) {
     return x.toLowerCase();
   }
@@ -9,11 +9,9 @@ describe("contramap", function() {
     return b.toString("ascii");
   }
 
-  it("upholds contravariant law of composition", function() {
-    var parser1 = Parsimmon.string("a")
-      .contramap(toLower)
-      .contramap(chrs);
-    var parser2 = Parsimmon.string("a").contramap(function(x) {
+  it("upholds contravariant law of composition", function () {
+    var parser1 = Parsimmon.string("a").contramap(toLower).contramap(chrs);
+    var parser2 = Parsimmon.string("a").contramap(function (x) {
       return toLower(chrs(x));
     });
     var input = Buffer.from([0x61]);

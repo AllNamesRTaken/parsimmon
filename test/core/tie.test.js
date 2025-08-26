@@ -1,39 +1,31 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
+import { testSetScenario } from "../helper.js";
 
-testSetScenario(function() {
-  describe("parser.tie()", function() {
-    it("concatenates all the results", function() {
+testSetScenario(function () {
+  describe("parser.tie()", function () {
+    it("concatenates all the results", function () {
       var parser = Parsimmon.seq(
         Parsimmon.string("<| "),
         Parsimmon.letter,
         Parsimmon.digit,
-        Parsimmon.string(" |>")
+        Parsimmon.string(" |>"),
       ).tie();
       var text = "<| o7 |>";
       var result = parser.tryParse(text);
       assert.strictEqual(result, text);
     });
-
-    it("only accept array of string parsers", function() {
-      assert.throws(function() {
-        Parsimmon.of(1)
-          .tie()
-          .tryParse("");
+    it("only accept array of string parsers", function () {
+      assert.throws(function () {
+        Parsimmon.of(1).tie().tryParse("");
       });
-      assert.throws(function() {
-        Parsimmon.of([1])
-          .tie()
-          .tryParse("");
+      assert.throws(function () {
+        Parsimmon.of([1]).tie().tryParse("");
       });
-      assert.throws(function() {
-        Parsimmon.of(["1", 2])
-          .tie()
-          .tryParse("");
+      assert.throws(function () {
+        Parsimmon.of(["1", 2]).tie().tryParse("");
       });
-      assert.doesNotThrow(function() {
-        Parsimmon.of(["1"])
-          .tie()
-          .tryParse("");
+      assert.doesNotThrow(function () {
+        Parsimmon.of(["1"]).tie().tryParse("");
       });
     });
   });

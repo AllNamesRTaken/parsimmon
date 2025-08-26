@@ -1,6 +1,6 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
 
-describe("promap", function() {
+describe("promap", function () {
   function toLower(x) {
     return x.toLowerCase();
   }
@@ -17,18 +17,18 @@ describe("promap", function() {
     return x - 1;
   }
 
-  it("upholds profunctor law of composition", function() {
+  it("upholds profunctor law of composition", function () {
     var parser1 = Parsimmon.string("aa")
       .promap(toLower, length)
       .promap(chrs, sub1);
 
     var parser2 = Parsimmon.string("aa").promap(
-      function(x) {
+      function (x) {
         return toLower(chrs(x));
       },
-      function(x) {
+      function (x) {
         return sub1(length(x));
-      }
+      },
     );
     var input = Buffer.from([0x41, 0x41]);
 

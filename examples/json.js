@@ -1,9 +1,7 @@
-"use strict";
-
 // Run me with Node to see my output!
 
-let util = require("util");
-let P = require("..");
+import util from "util";
+import P from "../build/parsimmon.es.min.js";
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -14,7 +12,7 @@ function interpretEscapes(str) {
     f: "\f",
     n: "\n",
     r: "\r",
-    t: "\t"
+    t: "\t",
   };
   return str.replace(/\\(u[0-9a-fA-F]{4}|[^u])/, (_, escape) => {
     let type = escape.charAt(0);
@@ -45,9 +43,9 @@ function word(str) {
 
 let JSONParser = P.createLanguage({
   // This is the main entry point of the parser: a full JSON value.
-  value: r =>
+  value: (r) =>
     P.alt(r.object, r.array, r.string, r.number, r.null, r.true, r.false).thru(
-      parser => whitespace.then(parser)
+      (parser) => whitespace.then(parser),
     ),
 
   // The basic tokens in JSON, with optional whitespace afterward.
@@ -79,25 +77,25 @@ let JSONParser = P.createLanguage({
   // JSON documents as possible. Notice that we're using the parser `json` we just
   // defined above. Arrays and objects in the JSON grammar are recursive because
   // they can contain any other JSON document within them.
-  array: r => r.lbracket.then(r.value.sepBy(r.comma)).skip(r.rbracket),
+  array: (r) => r.lbracket.then(r.value.sepBy(r.comma)).skip(r.rbracket),
 
   // Object parsing is a little trickier because we have to collect all the key-
   // value pairs in order as length-2 arrays, then manually copy them into an
   // object.
-  pair: r => P.seq(r.string.skip(r.colon), r.value),
+  pair: (r) => P.seq(r.string.skip(r.colon), r.value),
 
-  object: r =>
+  object: (r) =>
     r.lbrace
       .then(r.pair.sepBy(r.comma))
       .skip(r.rbrace)
-      .map(pairs => {
+      .map((pairs) => {
         let object = {};
-        pairs.forEach(pair => {
+        pairs.forEach((pair) => {
           let [key, value] = pair;
           object[key] = value;
         });
         return object;
-      })
+      }),
 });
 
 ///////////////////////////////////////////////////////////////////////

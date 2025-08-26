@@ -1,19 +1,18 @@
-"use strict";
+import Parsimmon from "../../src/parsimmon.js";
+import { testSetScenario } from "../helper.js";
 
-testSetScenario(function() {
-  describe(".tryParse", function() {
-    it("returns just the value", function() {
+testSetScenario(function () {
+  describe(".tryParse", function () {
+    it("returns just the value", function () {
       var x = 4;
       assert.equal(Parsimmon.of(x).tryParse(""), x);
     });
-
-    it("returns throws on a bad parse", function() {
-      assert.throws(function() {
+    it("returns throws on a bad parse", function () {
+      assert.throws(function () {
         Parsimmon.digit.tryParse("a");
       });
     });
-
-    it("thrown error message is equal to formatError", function() {
+    it("thrown error message is equal to formatError", function () {
       var input = "a";
       var parser = Parsimmon.digit;
       var result = parser.parse(input);
@@ -24,8 +23,7 @@ testSetScenario(function() {
         assert.equal(err.message, errMsg);
       }
     });
-
-    it("thrown error contains full result object", function() {
+    it("thrown error contains full result object", function () {
       var input = "a";
       var parser = Parsimmon.digit;
       var result = parser.parse(input);
@@ -35,8 +33,7 @@ testSetScenario(function() {
         assert.deepEqual(err.result, result);
       }
     });
-
-    it("thrown error message is equal to formatError", function() {
+    it("thrown error message is equal to formatError", function () {
       var input = "a";
       var parser = Parsimmon.digit;
       try {
