@@ -1,13 +1,9 @@
 <a href="https://badge.fury.io/js/parsimmon"><img src="https://badge.fury.io/js/parsimmon.svg" alt=""></a>
 <a href="https://opensource.org/licenses/MIT"><img alt="" src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
-<a href="https://coveralls.io/github/jneen/parsimmon?branch=master"><img alt="" src="https://coveralls.io/repos/github/jneen/parsimmon/badge.svg?branch=master"/></a>
-<a href="https://travis-ci.org/jneen/parsimmon"><img alt="" src="https://api.travis-ci.org/jneen/parsimmon.svg"></a>
+<a href="https://coveralls.io/github/allnamesrtaken/parsimmon?branch=master"><img alt="" src="https://coveralls.io/repos/github/allnamesrtaken/parsimmon/badge.svg?branch=master"/></a>
+<a href="https://travis-ci.org/allnamesrtaken/parsimmon"><img alt="" src="https://api.travis-ci.org/allnamesrtaken/parsimmon.svg"></a>
 
-<a href="https://github.com/jneen/parsimmon"><img align="right" src="https://i.imgur.com/wyKOf.png" alt="Parsimmon"></a>
-
-> **!!! PARSIMMON IS CURRENTLY UNMAINTAINED !!!**
-> 
-> Please contact [@jneen][] if you would like to become the new maintainer.
+<a href="https://github.com/allnamesrtaken/parsimmon"><img align="right" src="https://i.imgur.com/wyKOf.png" alt="Parsimmon"></a>
 
 # Parsimmon
 

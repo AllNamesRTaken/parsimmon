@@ -1,3 +1,10 @@
+## 2.0.0 (2025-01-26)
+- Cloned original unmaintained project.
+- Moved the entire project to ES5
+- Changed build system to vite
+- Changed test runner to vite
+- Updated all tests and examples.
+
 ## 1.18.1 (2021-12-19)
 
 - Fixes a bug in the line/column number tracking for Mac OS 9 linebreaks
