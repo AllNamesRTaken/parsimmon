@@ -84,20 +84,20 @@ export default class Parsimmon<T> {
 
   static succeed<T>(value: T): Parsimmon<T>;
   static fail(message: string): Parsimmon<never>;
-  static eof(): Parsimmon<null>;
+  static eof: Parsimmon<null>;
 
-  static any(): Parsimmon<string>;
-  static all(): Parsimmon<string>;
-  static index(): Parsimmon<Index>;
+  static any: Parsimmon<string>;
+  static all: Parsimmon<string>;
+  static index: Parsimmon<Index>;
 
-  static whitespace(): Parsimmon<string>;
-  static optWhitespace(): Parsimmon<string>;
+  static whitespace: Parsimmon<string>;
+  static optWhitespace: Parsimmon<string>;
 
-  static digit(): Parsimmon<string>;
-  static digits(): Parsimmon<string>;
+  static digit: Parsimmon<string>;
+  static digits: Parsimmon<string>;
 
-  static letter(): Parsimmon<string>;
-  static letters(): Parsimmon<string>;
+  static letter: Parsimmon<string>;
+  static letters: Parsimmon<string>;
 
   // Additional character helpers from the source repo
   static oneOf(str: string): Parsimmon<string>;
